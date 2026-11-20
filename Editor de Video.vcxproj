@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>18.0</VCProjectVersion>
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{88e5cc4a-f0fb-4e35-98fe-444f22c70743}</ProjectGuid>
+    <RootNamespace>EditordeVideo</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <!-- Raiz del build de FFmpeg (x64, compartido). Se puede sobreescribir por linea de comandos:
+         msbuild "Editor de Video.vcxproj" /p:FFmpegRoot=D:\otra\ruta\msvc -->
+    <FFmpegRoot Condition="'$(FFmpegRoot)' == ''">C:\ffmpeg9\msvc</FFmpegRoot>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v145</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>Dynamic</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <OutDir>$(SolutionDir)x64\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)x64\$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(FFmpegRoot)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(FFmpegRoot)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;swscale.lib;swresample.lib;avutil.lib;shell32.lib;comctl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D /Q "$(FFmpegRoot)\bin\*.dll" "$(OutDir)" &gt;nul
+xcopy /Y /D /Q "$(FFmpegRoot)\bin\ffmpeg.exe" "$(OutDir)" &gt;nul
+xcopy /Y /D /Q "$(FFmpegRoot)\bin\ffprobe.exe" "$(OutDir)" &gt;nul
+if exist "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\debug_nonredist\x64\Microsoft.VC145.DebugMFC" xcopy /Y /D /Q "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\debug_nonredist\x64\Microsoft.VC145.DebugMFC\*.dll" "$(OutDir)" &gt;nul</Command>
+      <Message>Copiando FFmpeg (DLLs, ffmpeg.exe, ffprobe.exe) y MFC debug a $(OutDir)...</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>$(FFmpegRoot)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(FFmpegRoot)\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>avdevice.lib;avfilter.lib;avformat.lib;avcodec.lib;swscale.lib;swresample.lib;avutil.lib;shell32.lib;comctl32.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Manifest>
+      <EnableSegmentHeap>true</EnableSegmentHeap>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D /Q "$(FFmpegRoot)\bin\*.dll" "$(OutDir)" &gt;nul
+xcopy /Y /D /Q "$(FFmpegRoot)\bin\ffmpeg.exe" "$(OutDir)" &gt;nul
+xcopy /Y /D /Q "$(FFmpegRoot)\bin\ffprobe.exe" "$(OutDir)" &gt;nul
+if exist "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\x64\Microsoft.VC145.MFC" xcopy /Y /D /Q "$(VCInstallDir)Redist\MSVC\$(VCToolsRedistVersion)\x64\Microsoft.VC145.MFC\*.dll" "$(OutDir)" &gt;nul</Command>
+      <Message>Copiando FFmpeg (DLLs, ffmpeg.exe, ffprobe.exe) y MFC a $(OutDir)...</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Editor de Video.cpp" />
+    <ClCompile Include="LibraryView.cpp" />
+    <ClCompile Include="MainFrame.cpp" />
+    <ClCompile Include="MediaProbe.cpp" />
+    <ClCompile Include="FfmpegExporter.cpp" />
+    <ClCompile Include="PreviewAudio.cpp" />
+    <ClCompile Include="PreviewPlayer.cpp" />
+    <ClCompile Include="PreviewView.cpp" />
+    <ClCompile Include="Theme.cpp" />
+    <ClCompile Include="TimelineView.cpp" />
+
+    <ClCompile Include="TextRenderer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LibraryView.h" />
+    <ClInclude Include="MainFrame.h" />
+    <ClInclude Include="MediaProbe.h" />
+    <ClInclude Include="FfmpegExporter.h" />
+    <ClInclude Include="PreviewAudio.h" />
+    <ClInclude Include="VideoEditorTypes.h" />
+    <ClInclude Include="PreviewPlayer.h" />
+    <ClInclude Include="PreviewView.h" />
+    <ClInclude Include="Theme.h" />
+    <ClInclude Include="TimelineView.h" />
+
+    <ClInclude Include="TextRenderer.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

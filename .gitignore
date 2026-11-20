@@ -1,0 +1,32 @@
+# Visual Studio
+.vs/
+x64/
+Debug/
+Release/
+*.user
+*.suo
+*.VC.db
+*.VC.opendb
+*.ipch
+*.obj
+*.pdb
+*.ilk
+*.idb
+*.exp
+*.lib
+*.tlog
+*.log
+
+# Ejecutables y binarios
+*.exe
+*.dll
+
+# Videos y audios de prueba
+*.mp4
+*.m4a
+*.wav
+*.avi
+*.mkv
+
+# FFmpeg local
+ffmpegroot/
